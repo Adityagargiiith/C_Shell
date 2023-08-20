@@ -4,7 +4,7 @@
 
 void prompt();
 int parsesemicolon(char *input2,char **arguments);
-void parsespace(char *input2,char ** stringsafterpartsing,int v,int *count_of_history,char **history);
+void parsespace(char *input2,char ** stringsafterpartsing,int v,int *count_of_history,char **history,char *history_file_path);
 void executewarp(char **input2);
 void executepeek(char **input2);
 // void executepastevents(char **input2);
@@ -14,7 +14,8 @@ void proclore(char **input2);
 
 void print_history(char **input2,int *count_of_history,char **history);
 void proclore(char **input2);
-void save_history(char **input2,int count,int *count_of_history,char **history);
+void save_history(char **input2,int count,int *count_of_history,char **history,char *history_file_path);
+void load_history(int *count_of_history,char **history,char *history_file_path);
 
 #define ANSI_COLOR_GREEN   "\x1b[32m"  
 #define ANSI_COLOR_WHITE   "\x1b[0m"  

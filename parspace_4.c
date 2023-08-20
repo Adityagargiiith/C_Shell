@@ -3,7 +3,8 @@
 // extern int count_of_history_1;
 // count_of_history_1=0;
 
-void parsespace(char *input2,char ** stringsafterpartsing,int v,int *count_of_history,char **history) {
+void parsespace(char *input2,char ** stringsafterpartsing,int v,int *count_of_history,char **history,char *history_file_path) {
+
 // printf("%s",input200);
 
 // char *arguments[1000];
@@ -30,7 +31,7 @@ executewarp(parsedpipeargument);
 // add_to_history()
 // printf("%s",stringsafterpartsing[0]);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
-save_history(stringsafterpartsing,v,count_of_history,history);
+save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 
 // (*count_of_history)++;
 // printf("%d",*count_of_history);
@@ -44,7 +45,7 @@ if(strcmp(parsedpipeargument[0],"peek")==0){
     // printf("hello");
 executepeek(parsedpipeargument);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
-save_history(stringsafterpartsing,v,count_of_history,history);
+save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 
 
 }
@@ -62,7 +63,7 @@ if(strcmp(parsedpipeargument[0],"proclore")==0){
 // add_to_history(stringsafterpartsing,v);
 proclore(parsedpipeargument);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
-save_history(stringsafterpartsing,v,count_of_history,history);
+save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 // printf("%s\n",parsedpipeargument[1]);
 // for(int i=0;i<count;i++){
 //     printf("%s\n",parsedpipeargument[i]);
