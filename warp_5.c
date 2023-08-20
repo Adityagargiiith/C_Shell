@@ -37,15 +37,14 @@ else if(strcmp(input2[1],"..")==0 || strcmp(input2[1],".")==0){
 printf("%s\n",new_directory);
 
 }
+
+
+
 else{
-    //  char directory[100];
-//  char new_directory[100];
-//  char path[1000];
+  
  char *path = (char *)malloc(sizeof(char)*(strlen(input2[1]+1)));
  strcpy(path,input2[1]);
-// int l=sizeof(path);
-// printf("%d",l);
-//   char directory[100];
+
  char new_directory[10000];
 //  char *path="hello";
  char dash[10]="/";
