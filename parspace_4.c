@@ -72,6 +72,8 @@ save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 else{
 
     executeprocess(copy_of_input);
+    add_to_history(stringsafterpartsing,v,count_of_history,history);
+save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 
 }
    

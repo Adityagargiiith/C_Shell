@@ -1,15 +1,2 @@
-warp .
-warp .
-warp .
-warp .
-warp .
-warp .
-warp .
-warp .
-warp .
-warp .
-warp .
-warp .
-warp .
-warp .
-warp -
+warp ..
+peek -l .

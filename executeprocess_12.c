@@ -23,6 +23,10 @@ while (parsedpipeargument[count]!=NULL){
 }
 pid_t pid;
 int status;
+struct timeval start_time, end_time;
+
+    gettimeofday(&start_time, NULL);
+
 
   pid = fork();
     if (pid == 0) {
@@ -33,17 +37,38 @@ int status;
     } else if (pid > 0) {
         // Parent process
         if(flag==1){
-         printf("[%d]\n", pid);
+pid_t copy_pid;
+copy_pid=pid;
+           while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+        if (WIFEXITED(status)) {
+            printf("%s exited normally (%d)\n",parsedpipeargument[0], pid);
+        } else {
+            printf("Background process %d exited abnormally\n", pid);
+        }
+    }
+         printf("%d\n", copy_pid);
         // waitpid(pid, &status, 0);
+
         }
         else{
-              waitpid(pid, &status, 0);
+                  while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
         if (WIFEXITED(status)) {
-            printf("%s exited normally\n", parsedpipeargument[0]);
-        } else {
-            printf("%s exited abnormally\n", parsedpipeargument[0]);
-        }
+                        printf("%s exited normally (%d)\n",parsedpipeargument[0], pid);
 
+        } else {
+            printf("Background process %d exited abnormally\n", pid);
+        }
+    }
+
+              waitpid(pid, &status, 0);
+
+
+                gettimeofday(&end_time, NULL);
+                int time=end_time.tv_sec-start_time.tv_sec;
+if(time>2){
+    printf("%s for %d seconds\n",parsedpipeargument[0],time);
+}
+    
         }
     
     } else {
