@@ -7,7 +7,7 @@ void load_history(int *count_of_history,char **history,char *history_file_path) 
     // printf("%d",*count_of_history);
     FILE* file=fopen(history_file_path,"r");
      if (file == NULL) {
-        return; 
+        return;     
     }
 
     char line[1000];

@@ -2,7 +2,7 @@
 #include "prompt.h"
 
 
-void prompt() {
+void prompt(char *homedirectory) {
     // Do not hardcode the prompt
     // printf("S");
      uid_t uid = getuid();
@@ -16,6 +16,11 @@ void prompt() {
     char directory[100];
     getcwd(directory, sizeof(directory));
 
-    printf("<" ANSI_COLOR_GREEN "%s@" ANSI_COLOR_RESET  ANSI_COLOR_GREEN "%s" ANSI_COLOR_RESET ":" ANSI_COLOR_BLUE "%s" ANSI_COLOR_RESET ">", pw->pw_name, systeminfo.nodename, directory);
-    // return;
+ if (strncmp(directory, homedirectory, strlen(homedirectory)) == 0) {
+        char relativedirectory[100];
+        snprintf(relativedirectory, sizeof(relativedirectory), "~%s", directory + strlen(homedirectory));
+        printf("<" ANSI_COLOR_GREEN "%s@" ANSI_COLOR_RESET ANSI_COLOR_GREEN "%s" ANSI_COLOR_RESET ":" ANSI_COLOR_BLUE "%s" ANSI_COLOR_RESET ">", pw->pw_name, systeminfo.nodename, relativedirectory);
+    } else {
+        printf("<" ANSI_COLOR_GREEN "%s@" ANSI_COLOR_RESET ANSI_COLOR_GREEN "%s" ANSI_COLOR_RESET ":" ANSI_COLOR_BLUE "%s" ANSI_COLOR_RESET ">", pw->pw_name, systeminfo.nodename, directory);
+    }
 }
