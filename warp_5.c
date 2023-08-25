@@ -30,7 +30,7 @@ if(count==1 || strcmp(input2[1],"~")==0){
     chdir(homedirectory);
     getcwd(new_directory,sizeof(new_directory));
     
-
+    
      if (strncmp(new_directory, homedirectory, strlen(homedirectory)) == 0) {
         char relativedirectory[100];
         snprintf(relativedirectory, sizeof(relativedirectory), "/home/%s%s",pw->pw_name, new_directory + strlen(homedirectory));

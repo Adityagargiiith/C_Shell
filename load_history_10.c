@@ -17,7 +17,7 @@ void load_history(int *count_of_history,char **history,char *history_file_path) 
         (*count_of_history)++;
     }
  
-
+// printf("%d",*count_of_history);
     fclose(file);
 
      }

@@ -17,10 +17,11 @@ void add_to_history(char **input2,int count,int *count_of_history,char **history
     }
         else{
             // printf("%d",*count_of_history);
-            for(int i=0;i<13;i++){
+
+            if(strcmp(history[14],input2[count])!=0){
+            for(int i=0;i<14;i++){
           strcpy(history[i],history[i+1]);
             }
-            if(strcmp(history[14],input2[count])!=0){
   strcpy(history[14],input2[count]);
             } 
         }

@@ -46,6 +46,7 @@ copy_pid=pid;
             printf("Background process %d exited abnormally\n", pid);
         }
     }
+
          printf("%d\n", copy_pid);
         // waitpid(pid, &status, 0);
 
@@ -81,6 +82,7 @@ if(time>2){
 void executeprocess(char *input2)
 {
 
+// printf("hello");
     int count = 0;
     char parsedpipeargument[MAXARGUMENTS][MAXARGUMENTS];
     
@@ -97,9 +99,9 @@ void executeprocess(char *input2)
             process_single_command(copy,flag); 
             // free(parsedpipeargument[count]); 
             
-            input2 += i + 1; // Move the input pointer after the '&'
-             l-= i + 1; // Adjust the remaining input length
-            i = -1; // Reset the loop index
+            input2 += i + 1;
+             l-= i + 1; 
+            i = -1; 
             count++;
         }
 

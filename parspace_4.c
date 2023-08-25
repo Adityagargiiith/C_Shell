@@ -11,7 +11,7 @@ char *parsedpipeargument[MAXARGUMENTS];
 
 
 for(int i=0;i<MAXARGUMENTS;i++){
-    parsedpipeargument[i]=strsep(&input2," \n");
+    parsedpipeargument[i]=strsep(&input2," \n\t");
     if(parsedpipeargument[i]==NULL){
         break;
     }
@@ -41,7 +41,7 @@ strcpy(previous_directory,current_directory);
 
 else if(strcmp(parsedpipeargument[0],"peek")==0){
     // printf("hello");
-executepeek(parsedpipeargument);
+executepeek(parsedpipeargument,homedirectory,previous_directory);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 
@@ -51,7 +51,7 @@ save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 
 else if(strcmp(parsedpipeargument[0],"pastevents")==0){
 // add_to_history(stringsafterpartsing,v);
-print_history(parsedpipeargument,count_of_history,history);
+print_history(parsedpipeargument,count_of_history,history,homedirectory,previous_directory,copy_of_input);
 
 }
 
@@ -70,7 +70,6 @@ save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 
 }
 else{
-
     executeprocess(copy_of_input);
     add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);

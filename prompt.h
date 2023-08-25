@@ -6,13 +6,13 @@ void prompt(char *homedirectory);
 int parsesemicolon(char *input2,char **arguments);
 void parsespace(char *input2,char ** stringsafterpartsing,int v,int *count_of_history,char **history,char *history_file_path,char *homedirectory,char *previous_directory,char * copy_of_input);
 void executewarp(char **input2,char *homedirectory,char *previous_directory);
-void executepeek(char **input2);
+void executepeek(char **input2,char *homedirectory,char *previous_directory);
 // void executepastevents(char **input2);
 void storehistory(char **input2);
 void add_to_history(char **input2,int count,int *count_of_history,char **history);
 void proclore(char **input2);
+void print_history(char **input2, int(*count_of_history), char **history, char *homedirectory, char *previous_directory,char *copy_of_input);
 
-void print_history(char **input2,int *count_of_history,char **history);
 void proclore(char **input2);
 void save_history(char **input2,int count,int *count_of_history,char **history,char *history_file_path);
 void load_history(int *count_of_history,char **history,char *history_file_path);

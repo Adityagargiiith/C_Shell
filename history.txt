@@ -1,2 +1,15 @@
+peek -la .
+proclore
+seek hello
+warp -
+seek hello
+seek prompt
+seek headers .
+pastevnets execute 1
+echo hello
+seek hello
+seek history
+echo hello
 warp ..
-peek -l .
+echo hello
+pastevnets execute 5
