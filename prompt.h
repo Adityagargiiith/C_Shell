@@ -16,9 +16,9 @@ void print_history(char **input2, int(*count_of_history), char **history, char *
 void proclore(char **input2);
 void save_history(char **input2,int count,int *count_of_history,char **history,char *history_file_path);
 void load_history(int *count_of_history,char **history,char *history_file_path);
-void executeprocess(char *input2);
+void executeprocess(char *input2,char *homedirectory,char *previous_directory,char *copy_of_input,int *count_of_history,char **history);
 
-void seek_command(char ** input2);
+void seek_command(char ** input2,char *homedirectory,char *previous_directory);
 
 #define ANSI_COLOR_GREEN   "\x1b[32m"  
 #define ANSI_COLOR_WHITE   "\x1b[0m"  

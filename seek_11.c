@@ -1,16 +1,14 @@
 #include "headers.h"
 #include "prompt.h"
 
-char *directoryforpath(char *target_directory, char *word)
+char *directoryforpath(char *target_directory, char *word, int flagd, int flagf)
 {
-
+    // printf("%s\n",word);
     DIR *directory;
     struct dirent *entry;
     if ((directory = opendir(target_directory)) == NULL)
     {
-
         printf("No match found");
-
     }
     int flag = 0;
     while ((entry = readdir(directory)) != NULL)
@@ -18,40 +16,117 @@ char *directoryforpath(char *target_directory, char *word)
 
         if (strcmp(entry->d_name, "..") == 0 || strcmp(entry->d_name, ".") == 0)
         {
-          continue;
+            continue;
         }
 
-        char *fullpath=malloc(sizeof(char)*1000);
+        char *fullpath = malloc(sizeof(char) * 1000);
 
         strcpy(fullpath, target_directory);
 
         strcat(fullpath, "/");
 
         strcat(fullpath, entry->d_name);
-
+        // printf("%s\n",fullpath);
         struct stat STAT;
         if (stat(fullpath, &STAT) < 0)
         {
             continue;
+        }
+        // stat(fullpath,&STAT);
+        if (S_ISDIR(STAT.st_mode))
+        {
+            // printf("%s %s\n",entry->d_name,fullpath);
+            if (strcmp(entry->d_name, word) == 0 && flagf == 0)
 
+            {
+                return fullpath;
+            }
+            // printf("%s\n",entry->d_name);
+            return directoryforpath(fullpath, word, flagd, flagf);
+        }
+        if (S_ISREG(STAT.st_mode) && flagd == 0)
+        {
+            printf("%s %s\n", entry->d_name, fullpath);
+            if (strstr(entry->d_name, word) != NULL)
+            {
+                // printf("garvitjhukta\n");
+                return fullpath;
+            }
+        }
+    }
+}
+
+void seek_recursion_flag_with_f(char *target_directory, char *word, char *relativepath, int flagd, int flagf, int flage, int *count)
+{
+
+    DIR *directory;
+
+    struct dirent *entry;
+
+    if ((directory = opendir(target_directory)) == NULL)
+    {
+        printf("No match found");
+        return;
+    }
+    // int count = 0;
+    while ((entry = readdir(directory)) != NULL)
+    {
+        if (strcmp(entry->d_name, "..") == 0 || strcmp(entry->d_name, ".") == 0)
+        {
+            continue;
+        }
+
+        char fullpath[10000];
+        strcpy(fullpath, target_directory);
+        strcat(fullpath, "/");
+        strcat(fullpath, entry->d_name);
+
+        char newrelativepath[1000];
+        snprintf(newrelativepath, sizeof(newrelativepath), "%s/%s", relativepath, entry->d_name);
+        struct stat STAT;
+        if (stat(fullpath, &STAT) < 0)
+        {
+            continue;
         }
         if (S_ISDIR(STAT.st_mode))
         {
-            if (strstr(entry->d_name, word) != NULL)
+            if (strcmp(entry->d_name, word) == 0 && flagf == 0)
             {
-
-                flag = 1;
-
-                return fullpath;
-
+                // flag=1;
+                (*count)++;
+                // printf("%s\n",newrelativepath);
             }
-
-            directoryforpath(fullpath, word);
+            seek_recursion_flag_with_f(fullpath, word, newrelativepath, flagd, flagf, flage, count);
         }
+        else if (S_ISREG(STAT.st_mode) && flagd == 0)
+        {
+            if (strncmp(entry->d_name, word, strlen(word)) == 0 && entry->d_name[strlen(word)] == '.')
+            {
+                FILE *file = fopen(fullpath, "r");
+                if (file == NULL)
+                {
+                    perror("Error opening file");
+                    return;
+                }
 
+                char buffer[1024];
+                while (fgets(buffer, sizeof(buffer), file) != NULL)
+                {
+                    printf("%s", buffer);
+                }
+
+                fclose(file);
+                // printf("%s",fullpath);
+                return;
+                // (*count)++;
+            }
+        }
     }
-
-    return NULL;
+    // if (count == 0)
+    // {
+    //     printf("No match found");
+    // }
+    return;
 }
 
 void seek_recursion_flag_with_e(char *target_directory, char *word, char *relativepath, int flagd, int flagf, int flage, int *count)
@@ -84,88 +159,38 @@ void seek_recursion_flag_with_e(char *target_directory, char *word, char *relati
         struct stat STAT;
         if (stat(fullpath, &STAT) < 0)
         {
-
             continue;
         }
-        if (S_ISDIR(STAT.st_mode) && flagf == 0)
+        if (S_ISDIR(STAT.st_mode))
         {
-            if (strstr(entry->d_name, word) != NULL)
+            if (strcmp(entry->d_name, word) == 0 && flagf == 0)
+
             {
                 // flag=1;
                 (*count)++;
                 // printf("%s\n",newrelativepath);
             }
-            seek_recursion_flag_with_e(fullpath, word, newrelativepath, flagd, flagf, flage,count);
-        }
-    }
-    if (count == 0)
-    {
-        printf("No match found");
-    }
-    return;
-}
-
-void seek_recursion_flag(char *target_directory, char *word, char *relativepath, int flagd, int flagf, int flage)
-{
-
-    DIR *directory;
-    //  int count = 0;
-    struct dirent *entry;
-
-    if ((directory = opendir(target_directory)) == NULL)
-    {
-        printf("No match found");
-        return;
-    }
-    int flag = 0;
-    while ((entry = readdir(directory)) != NULL)
-    {
-        if (strcmp(entry->d_name, "..") == 0 || strcmp(entry->d_name, ".") == 0)
-        {
-            continue;
-        }
-
-        char fullpath[10000];
-        strcpy(fullpath, target_directory);
-        strcat(fullpath, "/");
-        strcat(fullpath, entry->d_name);
-
-        char newrelativepath[1000];
-        snprintf(newrelativepath, sizeof(newrelativepath), "%s/%s", relativepath, entry->d_name);
-        struct stat STAT;
-        if (stat(fullpath, &STAT) < 0)
-        {
-            continue;
-        }
-        if (S_ISDIR(STAT.st_mode) && flagf == 0)
-        {
-            if (strstr(entry->d_name, word) != NULL)
-            {
-                flag = 1;
-                printf("%s\n", newrelativepath);
-            }
-            seek_recursion_flag(fullpath, word, newrelativepath, flagd, flagf, flage);
+            seek_recursion_flag_with_e(fullpath, word, newrelativepath, flagd, flagf, flage, count);
         }
         else if (S_ISREG(STAT.st_mode) && flagd == 0)
         {
-            if (strstr(entry->d_name, word) != NULL)
+            if (strncmp(entry->d_name, word, strlen(word)) == 0 && entry->d_name[strlen(word)] == '.')
+
             {
-                flag = 2;
-                printf("%s\n", newrelativepath);
+                (*count)++;
             }
         }
     }
-    if (flag == 0)
-    {
-        printf("No match found");
-    }
+    // if (count == 0)
+    // {
+    //     printf("No match found");
+    // }
+    return;
 }
 
-void seek_recursion(char *target_directory, char *word, char *relativepath)
+void seek_recursion_flag(char *target_directory, char *word, char *relativepath, int flagd, int flagf, int flage, int *flag)
 {
-    // printf("%d",*count_of_history);
 
-    // chdir()
     DIR *directory;
     //  int count = 0;
     struct dirent *entry;
@@ -175,7 +200,7 @@ void seek_recursion(char *target_directory, char *word, char *relativepath)
         printf("No match found");
         return;
     }
-    int flag = 0;
+    // int flag = 0;
     while ((entry = readdir(directory)) != NULL)
     {
         if (strcmp(entry->d_name, "..") == 0 || strcmp(entry->d_name, ".") == 0)
@@ -197,30 +222,86 @@ void seek_recursion(char *target_directory, char *word, char *relativepath)
         }
         if (S_ISDIR(STAT.st_mode))
         {
-            if (strstr(entry->d_name, word) != NULL)
+            if (strcmp(entry->d_name, word) == 0 && flagf == 0)
+
             {
-                flag = 1;
-                printf("%s\n", newrelativepath);
+                *flag = 1;
+                printf(ANSI_COLOR_BLUE "%s" ANSI_COLOR_RESET "\n", newrelativepath);
             }
-            seek_recursion(fullpath, word, newrelativepath);
+            // int flag=0;
+            seek_recursion_flag(fullpath, word, newrelativepath, flagd, flagf, flage, flag);
         }
-        else if (S_ISREG(STAT.st_mode))
+        else if (S_ISREG(STAT.st_mode) && flagd == 0)
         {
-            if (strstr(entry->d_name, word) != NULL)
+            if (strncmp(entry->d_name, word, strlen(word)) == 0 && entry->d_name[strlen(word)] == '.')
+
             {
-                flag = 2;
-                printf("%s\n", newrelativepath);
+                *flag = 2;
+                printf(ANSI_COLOR_GREEN "%s\n" ANSI_COLOR_RESET, newrelativepath);
             }
         }
-    }
-    if (flag == 0)
-    {
-        printf("No match found");
     }
 }
 
-void seek_command(char **input2)
+void seek_recursion(char *target_directory, char *word, char *relativepath, int *flag, char *homedirectory, char *previous_directory)
 {
+
+    DIR *directory;
+    struct dirent *entry;
+
+    if ((directory = opendir(target_directory)) == NULL)
+    {
+        printf("No match found\n");
+        return;
+    }
+    // int flag = 0;
+    while ((entry = readdir(directory)) != NULL)
+    {
+        if (strcmp(entry->d_name, "..") == 0 || strcmp(entry->d_name, ".") == 0)
+        {
+            continue;
+        }
+
+        char fullpath[10000];
+        strcpy(fullpath, target_directory);
+        strcat(fullpath, "/");
+        strcat(fullpath, entry->d_name);
+
+        char newrelativepath[1000];
+        snprintf(newrelativepath, sizeof(newrelativepath), "%s/%s", relativepath, entry->d_name);
+        struct stat STAT;
+        if (stat(fullpath, &STAT) < 0)
+        {
+
+            continue;
+        }
+        if (S_ISDIR(STAT.st_mode))
+        {
+            if (strcmp(entry->d_name, word) == 0)
+
+            {
+                *flag = 1;
+                printf(ANSI_COLOR_BLUE "%s\n" ANSI_COLOR_RESET, newrelativepath);
+            }
+            seek_recursion(fullpath, word, newrelativepath, flag, homedirectory, previous_directory);
+        }
+
+        else if (S_ISREG(STAT.st_mode))
+        {
+            if (strncmp(entry->d_name, word, strlen(word)) == 0 && entry->d_name[strlen(word)] == '.')
+
+            {
+                *flag = 2;
+                printf(ANSI_COLOR_GREEN "%s\n" ANSI_COLOR_RESET, newrelativepath);
+            }
+        }
+    }
+}
+
+void seek_command(char **input2, char *homedirectory, char *previous_directory)
+{
+    char new_home_directory[100];
+    strcpy(new_home_directory, homedirectory);
 
     int count = 0;
     while (input2[count] != NULL)
@@ -233,101 +314,229 @@ void seek_command(char **input2)
     if (count == 3)
     {
         if (strcmp(input2[1], "-d") != 0 && strcmp(input2[1], "-f") != 0 && strcmp(input2[1], "-e") != 0)
-            seek_recursion(input2[2], input2[1], relativepath);
+        {
+            if (input2[2][0] == '~')
+            {
+                memmove(input2[2], input2[2] + 1, strlen(input2[2]));
+                strcat(new_home_directory, input2[2]);
+                strcpy(input2[2], new_home_directory);
+            }
+            if (input2[2][0] == '-')
+            {
+                strcpy(input2[2], previous_directory);
+            }
+            int flag = 0;
+            seek_recursion(input2[2], input2[1], relativepath, &flag, homedirectory, previous_directory);
+            if (flag == 0)
+            {
+                printf("No match found!\n");
+            }
+            // printf("%d",flag);
+        }
 
         else
         {
             if (strcmp(input2[1], "-d") == 0)
-                seek_recursion_flag(relativepath, input2[2], relativepath, 1, 0, 0);
+            {
+                int flag = 0;
+                seek_recursion_flag(relativepath, input2[2], relativepath, 1, 0, 0, &flag);
+                if (flag == 0)
+                {
+                    printf("No match found\n");
+                }
+            }
             if (strcmp(input2[1], "-f") == 0)
-                seek_recursion_flag(relativepath, input2[2], relativepath, 0, 1, 0);
+            {
+
+                int flag = 0;
+                seek_recursion_flag(relativepath, input2[2], relativepath, 0, 1, 0, &flag);
+                if (flag == 0)
+                {
+                    printf("No match found\n");
+                }
+            }
+
             if (strcmp(input2[1], "-e") == 0)
+            {
+                int flag = 0;
                 printf("invalid flag");
-            // seek_recursion_flag(relativepath,input2[2],relativepath,0,0,1);
+                // seek_recursion_flag(relativepath,input2[2],relativepath,0,0,1);
+            }
         }
     }
     else if (count == 2)
     {
         char *target_directory = ".";
-        seek_recursion(target_directory, input2[1], relativepath);
+        int flag = 0;
+        seek_recursion(target_directory, input2[1], relativepath, &flag, homedirectory, previous_directory);
+        if (flag == 0)
+        {
+            printf("No match found!\n");
+        }
     }
 
     else if (count == 4)
     {
-        if (strcmp(input2[1], "-d") == 0 && strcmp(input2[2],"-f")!=0 && strcmp(input2[2],"-e")!=0 )
+        if (strcmp(input2[1], "-d") == 0 && strcmp(input2[2], "-f") != 0 && strcmp(input2[2], "-e") != 0)
         {
-            seek_recursion_flag(input2[3], input2[2], relativepath, 1, 0, 0);
-        }
-
-        else if (strcmp(input2[1], "-f") == 0 && strcmp(input2[2],"-d")!=0 && strcmp(input2[2],"-e")!=0 )
-        {
-            seek_recursion_flag(input2[3], input2[2], relativepath, 0, 1, 0);
-        }
-        else if((strcmp(input2[1],"-d")==0 && strcmp(input2[2],"-e")==0) || (strcmp(input2[2],"-d")==0 && strcmp(input2[1],"-e")==0))
-        {
-
-
- int count = 0;
-//  printf("hello");
-char *newrelativepath=".";
-
-            seek_recursion_flag_with_e(newrelativepath, input2[3] , relativepath, 1, 0, 0, &count);
-
-            if (count == 1)
+            if (input2[3][0] == '~')
             {
-                char *newdirectory = directoryforpath(newrelativepath, input2[3]);
-                printf("%s\n",newdirectory);
+                memmove(input2[3], input2[3] + 1, strlen(input2[3]));
+                strcat(new_home_directory, input2[2]);
+                strcpy(input2[3], new_home_directory);
+            }
+            if (input2[3][0] == '-')
+            {
+                strcpy(input2[3], previous_directory);
+            }
+            int flag = 0;
+            seek_recursion_flag(input2[3], input2[2], relativepath, 1, 0, 0, &flag);
+            if (flag == 0)
+            {
+                printf("No match found!\n");
+            }
+        }
+
+        else if (strcmp(input2[1], "-f") == 0 && strcmp(input2[2], "-d") != 0 && strcmp(input2[2], "-e") != 0)
+        {
+            if (input2[3][0] == '~')
+            {
+                memmove(input2[3], input2[3] + 1, strlen(input2[3]));
+                strcat(new_home_directory, input2[2]);
+                strcpy(input2[3], new_home_directory);
+            }
+            if (input2[3][0] == '-')
+            {
+                strcpy(input2[3], previous_directory);
+            }
+            int flag = 0;
+            seek_recursion_flag(input2[3], input2[2], relativepath, 0, 1, 0, &flag);
+            if (flag == 0)
+            {
+                printf("No match found!\n");
+            }
+        }
+        else if ((strcmp(input2[1], "-d") == 0 && strcmp(input2[2], "-e") == 0) || (strcmp(input2[2], "-d") == 0 && strcmp(input2[1], "-e") == 0))
+        {
+
+            int countarguments = 0;
+            //  printf("hello");
+            char *newrelativepath = ".";
+
+            seek_recursion_flag_with_e(relativepath, input2[3], relativepath, 1, 0, 0, &countarguments);
+            // printf("%d",count);
+            if (countarguments == 1)
+            {
+                char *newdirectory = directoryforpath(newrelativepath, input2[3], 1, 0);
+                // char * newdirectory="hello";
+                printf("%s\n", newdirectory);
                 // printf("he;;");
                 chdir(newdirectory);
-
             }
-
+            else
+            {
+                int flag = 0;
+                seek_recursion_flag(newrelativepath, input2[3], relativepath, 1, 0, 0, &flag);
+                if (flag == 0)
+                {
+                    printf("No match found!\n");
+                }
+            }
         }
-    else if((strcmp(input2[1],"-f")==0 && strcmp(input2[2],"-e")==0) || (strcmp(input2[1],"-e")==0 && strcmp(input2[2],"-f")==0))
+
+        else if ((strcmp(input2[1], "-f") == 0 && strcmp(input2[2], "-e") == 0) || (strcmp(input2[1], "-e") == 0 && strcmp(input2[2], "-f") == 0))
         {
 
-            seek_recursion_flag( ".",input2[3] , relativepath, 0, 1, 0);
+            int countarguments = 0;
+            //  printf("hello");
+            char *newrelativepath = ".";
 
+            seek_recursion_flag_with_e(newrelativepath, input2[3], relativepath, 0, 1, 0, &countarguments);
+            if (countarguments == 1)
+            {
+                seek_recursion_flag_with_f(newrelativepath, input2[3], relativepath, 0, 1, 0, &countarguments);
+            }
+            else
+            {
+                int flag = 0;
+                seek_recursion_flag(relativepath, input2[3], relativepath, 0, 1, 0, &flag);
+                if (flag == 0)
+                {
+                    printf("No match found\n");
+                }
+            }
+            // printf("%d",countarguments);
+        }
+        else{
+            printf("invalid flags");
+        }
     }
-
-    else{
-
-        printf("invalid flags");
-
-    }
-
- }
-
-
+    // printf("hello");
     else if (count == 5)
     {
+        if (input2[4][0] == '~')
+        {
+            memmove(input2[4], input2[4] + 1, strlen(input2[4]));
+            strcat(new_home_directory, input2[2]);
+            strcpy(input2[4], new_home_directory);
+        }
+        if (input2[4][0] == '-')
+        {
+            strcpy(input2[4], previous_directory);
+        }
 
         if ((strcmp(input2[1], "-d") == 0 && strcmp(input2[2], "-e") == 0) || (strcmp(input2[1], "-e") == 0 && strcmp(input2[2], "-d") == 0))
         {
+
             int count = 0;
             seek_recursion_flag_with_e(input2[4], input2[3], relativepath, 1, 0, 0, &count);
-                        // printf("%d",count);
 
             if (count == 1)
             {
-                char *newdirectory = directoryforpath(input2[4], input2[3]);
-                printf("%s\n",newdirectory);
-                // printf("he;;");
-                chdir(newdirectory);
+                // printf("%s\t%s\n",input2[4],input2[3]);
+                char *newdirectory = directoryforpath(input2[4], input2[3], 1, 0);
 
+                // if(newdirectory)
+                printf("%s\n", newdirectory);
+                chdir(newdirectory);
+            }
+            else
+            {
+                int flag = 0;
+                seek_recursion_flag(input2[4], input2[3], relativepath, 1, 0, 0, &flag);
+                if (flag == 0)
+                {
+                    printf("No match found!\n");
+                }
             }
         }
 
-      else if ((strcmp(input2[1], "-f") == 0 && strcmp(input2[2], "-e") == 0) || (strcmp(input2[1], "-e") == 0 && strcmp(input2[2], "-f") == 0))
+        else if ((strcmp(input2[1], "-f") == 0 && strcmp(input2[2], "-e") == 0) || (strcmp(input2[1], "-e") == 0 && strcmp(input2[2], "-f") == 0))
 
         {
 
-            seek_recursion_flag(input2[4], input2[3], relativepath, 0, 1, 0);
+            int countarguments = 0;
+            //  printf("hello");
+            // char *newrelativepath = ".";
 
+            seek_recursion_flag_with_e(input2[4], input2[3], relativepath, 0, 1, 0, &countarguments);
+            if (countarguments == 1)
+            {
+                seek_recursion_flag_with_f(input2[4], input2[3], relativepath, 0, 1, 0, &countarguments);
+            }
+            else
+            {
+                int flag = 0;
+                seek_recursion_flag(input2[4], input2[3], relativepath, 0, 1, 0, &flag);
+                if (flag == 0)
+                {
+                    printf("No match found!\n");
+                }
+            }
         }
         else
         {
-            printf("invalid flags");
+            printf("invalid flags\n");
         }
     }
 }

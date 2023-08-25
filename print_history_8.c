@@ -94,16 +94,9 @@ void print_history(char **input2, int(*count_of_history), char **history, char *
       else if (strcmp(parsedpipeargument[0], "seek") == 0)
       {
 
-        seek_command(parsedpipeargument);
+        seek_command(parsedpipeargument,homedirectory,previous_directory);
       }
-      else
-      {
-        // printf("hello");
-              char *copy = malloc(sizeof(char) * 1000);
-              copy=strdup(history[num-1]);
-
-        executeprocess(copy);
-      }
+     
 
       // return;
     }

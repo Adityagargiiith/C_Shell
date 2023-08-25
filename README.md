@@ -1,4 +1,6 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/76mHqLr5)
 # Description
 
 # Assumptions
+1. A history.txt file is present
+2. Pastevents commands are not stored in the text file
+3. System calls like cd, ls~ are not given as input because excevp does not take them as system call

@@ -64,13 +64,13 @@ save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 }
 else if(strcmp(parsedpipeargument[0],"seek")==0){
 
-seek_command(parsedpipeargument);
+seek_command(parsedpipeargument,homedirectory,previous_directory);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 
 }
 else{
-    executeprocess(copy_of_input);
+    executeprocess(copy_of_input,homedirectory,previous_directory,copy_of_input,count_of_history,history);
     add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 

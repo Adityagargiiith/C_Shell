@@ -54,7 +54,7 @@ void executepeek(char **input2,char *homedirectory,char* previous_directory)
   if(count==1 || strcmp(input2[1],"~")==0){
    
        dir = opendir(homedirectory);
-       printf("%s",homedirectory);
+      //  printf("%s",homedirectory);
     if (dir == NULL)
     {
       printf("invalid");

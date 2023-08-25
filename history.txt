@@ -1,15 +1,15 @@
-peek -la .
-proclore
-seek hello
-warp -
-seek hello
-seek prompt
-seek headers .
-pastevnets execute 1
-echo hello
-seek hello
-seek history
-echo hello
 warp ..
-echo hello
-pastevnets execute 5
+warp -
+peek ..
+seek file -
+warp ..
+warp -
+seek -d -e codeforces -
+seek -d -e codefoces -
+seek -d adf .
+seek -d fds
+seek -f fads
+seek -f dfsa .
+seek -d -f adfs
+seek -d -f afd .
+seek -d -e dasf
