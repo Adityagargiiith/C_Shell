@@ -1,8 +1,3 @@
-warp -
-peek ..
-seek file -
-warp ..
-warp -
 seek -d -e codeforces -
 seek -d -e codefoces -
 seek -d adf .
@@ -13,3 +8,8 @@ seek -d -f adfs
 seek -d -f afd .
 seek -d -e dasf
 proclore
+git add .
+git status
+git commit -m "final git push"
+git commit --m "finalpush"
+git push origin
