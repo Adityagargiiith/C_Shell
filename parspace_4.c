@@ -57,7 +57,7 @@ print_history(parsedpipeargument,count_of_history,history,homedirectory,previous
 
 else if(strcmp(parsedpipeargument[0],"proclore")==0){
 // add_to_history(stringsafterpartsing,v);
-proclore(parsedpipeargument);
+proclore(parsedpipeargument,homedirectory);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 

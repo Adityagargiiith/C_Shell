@@ -1,4 +1,3 @@
-warp ..
 warp -
 peek ..
 seek file -
@@ -13,3 +12,4 @@ seek -f dfsa .
 seek -d -f adfs
 seek -d -f afd .
 seek -d -e dasf
+proclore

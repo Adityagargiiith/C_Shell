@@ -89,7 +89,7 @@ void print_history(char **input2, int(*count_of_history), char **history, char *
 
       else if (strcmp(parsedpipeargument[0], "proclore") == 0)
       {
-        proclore(parsedpipeargument);
+        proclore(parsedpipeargument,homedirectory);
       }
       else if (strcmp(parsedpipeargument[0], "seek") == 0)
       {

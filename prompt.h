@@ -10,10 +10,10 @@ void executepeek(char **input2,char *homedirectory,char *previous_directory);
 // void executepastevents(char **input2);
 void storehistory(char **input2);
 void add_to_history(char **input2,int count,int *count_of_history,char **history);
-void proclore(char **input2);
+void proclore(char **input2,char *homedirectory);
 void print_history(char **input2, int(*count_of_history), char **history, char *homedirectory, char *previous_directory,char *copy_of_input);
 
-void proclore(char **input2);
+// void proclore(char **input2);
 void save_history(char **input2,int count,int *count_of_history,char **history,char *history_file_path);
 void load_history(int *count_of_history,char **history,char *history_file_path);
 void executeprocess(char *input2,char *homedirectory,char *previous_directory,char *copy_of_input,int *count_of_history,char **history);

@@ -52,7 +52,7 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
 
     else if (strcmp(parsedpipeargument[0], "proclore") == 0)
     {
-        proclore(parsedpipeargument);
+        proclore(parsedpipeargument,homedirectory);
     }
     else if (strcmp(parsedpipeargument[0], "seek") == 0)
     {

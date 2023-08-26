@@ -5,7 +5,7 @@
 #define BUFFER_SIZE 1000
 
 
-void proclore(char **input2){
+void proclore(char **input2,char *homedirectory){
   int count = 0;
   while (input2[count] != NULL)
   {
@@ -27,6 +27,8 @@ char linkname[BUFFER_SIZE];
       ssize_t len = readlink(linkname, path, sizeof(path) - 1);
       path[len]='\0';
     FILE *fp = fopen(buffer, "r");
+
+       
 
 
  char line[BUFFER_SIZE];
@@ -79,7 +81,18 @@ printf("pid : %d\n",pid );
 printf("process status : %s\n",process_status);
         printf("Process Group: %s\n", group_id);
         printf("Virtual memory: %s\n", vmsize);
-        printf("executable path :%s\n",path);
+        if (strncmp(path, homedirectory, strlen(homedirectory)) == 0)
+            {
+                char relativedirectory[100];
+                snprintf(relativedirectory, sizeof(relativedirectory), "~%s", path + strlen(homedirectory));
+                printf("Executable path : %s\n", relativedirectory);
+            }
+            else
+            {
+                printf("Executable path : %s\n", path);
+            }
+
+        // printf("executable path :%s\n",path);
 
         // printf("Process Group ID: %d\n", process_group);
 
