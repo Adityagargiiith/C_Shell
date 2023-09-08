@@ -9,6 +9,7 @@ void parsespace(char *input2,char ** stringsafterpartsing,int v,int *count_of_hi
 int count=0;
 char *parsedpipeargument[MAXARGUMENTS];
 
+char *copyofstringsafterparsing=strdup(input2);
 
 for(int i=0;i<MAXARGUMENTS;i++){
     parsedpipeargument[i]=strsep(&input2," \n\t");
@@ -21,6 +22,7 @@ for(int i=0;i<MAXARGUMENTS;i++){
     count++;
 
 }
+
 
 // printf("%s",parsedpipeargument[0]);
 // char *history[16];
@@ -65,6 +67,23 @@ save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 else if(strcmp(parsedpipeargument[0],"seek")==0){
 
 seek_command(parsedpipeargument,homedirectory,previous_directory);
+add_to_history(stringsafterpartsing,v,count_of_history,history);
+save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
+
+}
+else if((strstr(copyofstringsafterparsing,">>")!=NULL || strchr(copyofstringsafterparsing,'>')!=NULL || strchr(copyofstringsafterparsing,'<')!=NULL)&&strstr(copyofstringsafterparsing,"|")!=NULL){
+    executepipingwithIO(copyofstringsafterparsing);
+    add_to_history(stringsafterpartsing,v,count_of_history,history);
+save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
+}
+
+else if(strstr(copyofstringsafterparsing,">>")!=NULL || strchr(copyofstringsafterparsing,'>')!=NULL || strchr(copyofstringsafterparsing,'<')!=NULL){
+    input_output(copyofstringsafterparsing);
+    add_to_history(stringsafterpartsing,v,count_of_history,history);
+save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
+}
+else if(strstr(copyofstringsafterparsing,"|")!=NULL){
+executepiping(copyofstringsafterparsing);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 

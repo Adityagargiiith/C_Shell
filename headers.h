@@ -18,6 +18,10 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#include <fcntl.h>
+// #include <sys/types.h>
+// #include <sys/wait.h>
+
 // int count_of_history_1;
 // char *history[20];
 

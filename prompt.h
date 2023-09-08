@@ -19,6 +19,9 @@ void load_history(int *count_of_history,char **history,char *history_file_path);
 void executeprocess(char *input2,char *homedirectory,char *previous_directory,char *copy_of_input,int *count_of_history,char **history);
 
 void seek_command(char ** input2,char *homedirectory,char *previous_directory);
+void input_output(char *stringafterparsing);
+void executepiping(char *input);
+void executepipingwithIO(char *input);
 
 #define ANSI_COLOR_GREEN   "\x1b[32m"  
 #define ANSI_COLOR_WHITE   "\x1b[0m"  
