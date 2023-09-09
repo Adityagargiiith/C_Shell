@@ -71,6 +71,8 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
         pid = fork();
         if (pid == 0)
         {
+            //    signal(SIGINT,SIG_DFL);
+            //     signal(SIGTSTP,SIG_DFL);
             // Child process
             if (execvp(parsedpipeargument[0], parsedpipeargument) == -1)
             {
@@ -87,14 +89,14 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
             if (flag == 1)
             {
                 // printf("---->%d",*numberofprocesses);
-                processids[*numberofprocesses].pid=pid;
-               strcpy(processids[*numberofprocesses].processname,input2);
-                (*numberofprocesses)++;
-
-
 
                 pid_t copy_pid;
                 copy_pid = pid;
+                processids[*numberofprocesses].pid=copy_pid;
+                foregroundprocessid=copy_pid;
+
+               strcpy(processids[*numberofprocesses].processname,copy);
+                (*numberofprocesses)++;
                 while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
                 {
                     if (WIFEXITED(status))
@@ -113,11 +115,24 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
             }
             else
             {
-                    processids[*numberofprocesses].pid=pid;
-                    // strcpy()
+
+                // signal(SIGINT,SIG_IGN);
+                // signal(SIGTSTP,SIG_IGN);
+
+                int copy_pid;
+                copy_pid = pid;
+                // foregroundrocessid=pid
+                foregroundprocessid=copy_pid;
+                processids[*numberofprocesses].pid=copy_pid;
+
                strcpy(processids[*numberofprocesses].processname,copy);
-                //   processids->pid=pid;
                 (*numberofprocesses)++;
+            //         processids[*numberofprocesses].pid=pid;
+            //         // strcpy()
+            //    strcpy(processids[*numberofprocesses].processname,copy);
+            //     //   processids->pid=pid;
+            //     (*numberofprocesses)++;
+
                 while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
                 {
                     if (WIFEXITED(status))
@@ -129,9 +144,9 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
                         printf("Background process %d exited abnormally\n", pid);
                     }
                 }
-            }
 
             waitpid(pid, &status, 0);
+            }
 
             gettimeofday(&end_time, NULL);
             int time = end_time.tv_sec - start_time.tv_sec;

@@ -22,16 +22,19 @@
 #include <ncurses.h>
 #include <signal.h>
 
+extern int foregroundprocessid;
 typedef struct Process{
         int pid;
         char processname[1000];
     }Process;
+
+#include "prompt.h"
 // #include <sys/types.h>
 // #include <sys/wait.h>
+
 
 // int count_of_history_1;
 // char *history[20];
 
-#include "prompt.h"
 
 #endif

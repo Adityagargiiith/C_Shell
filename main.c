@@ -1,45 +1,40 @@
 #include "headers.h"
 
-
     char directory[100];
-
-int ctrl_c_pressed = 0;
-
-void sigint_handler(int sig) {
-    // Handle Ctrl-C (SIGINT) here
-//    printf("hello"); // Print a newline to go to the next prompt
-// ctrl_c_pressed = 1;
-if(ctrl_c_pressed){
-    prompt(directory);
-    // prompt(direectory)
-}
-printf("\n"); 
-// printf("hello");
-        // fflush(stdout);
+   int foregroundprocessid =0;
+void sigint_handler(int sig)
+{
+    printf("\n");
 }
 
-void sigtstp_handler(int sig) {
-    // Handle Ctrl-Z (SIGTSTP) here
-    pid_t fg_pid = getpid(); // Get the current shell's PID
-    if (fg_pid != getpid()) {
-        kill(fg_pid, SIGTSTP); // Send Ctrl-Z to the foreground process
+void sigtstp_handler(int sig)
+{
+    // if(sig==SIGTSTP){
+
+    printf("%d\n",foregroundprocessid);
+
+      if (foregroundprocessid != 0)
+    {
+        kill(foregroundprocessid, SIGSTOP);
+        printf("\nProcess %d suspended.\n", foregroundprocessid);
+        foregroundprocessid = 0;
     }
+    else{
+        // printf("hello");
+         printf("\nCtrl-Z pressed, but not suspending the shell.\n");
+    }
+    // }
+
 }
 
 int main()
 {
-    
-    
-
-    // typedef struct Process{
-    //     int pid;
-    //     char *processname;
-    // }Process;
-    // Keep accepting commands
+    // shellpid=getpid();
     int count_of_history = 0;
     char *history[16];
     Process processids[1000];
-    int countofprocessids=0;
+
+    int countofprocessids = 0;
 
     char cwd[1000];
     getcwd(cwd, sizeof(cwd));
@@ -47,53 +42,39 @@ int main()
     getcwd(directory, sizeof(directory));
     char previous_directory[1000];
     strcpy(previous_directory, directory);
-    // printf("%s",cwd);
     char history_file_path[1000];
 
-    // snprintf(history_file_path, sizeof(history_file_path), "%s/", cwd);
     strcpy(history_file_path, cwd);
     strcat(history_file_path, "/");
     strcat(history_file_path, HISTORY_FILE);
-
-
     load_history(&count_of_history, history, history_file_path);
 
-        
-    // signal(SIGTSTP, sigtstp_handler);
+//   setpgid(0, 0);
+    signal(SIGINT, sigint_handler);
+    signal(SIGTSTP, sigtstp_handler);
     while (1)
     {
-        ctrl_c_pressed=1;
-        // if (ctrl_c_pressed) {
-        //     ctrl_c_pressed = 0; // Reset the Ctrl-C flag
-        //     printf("\n");
-        //     fflush(stdout); // Print a newline immediately
-            
-        //     prompt(directory); // Print the prompt immediately
-        // } else {
-        //     prompt(directory);
-        // }
-        // printf("----->%d",ctrl_c_pressed);
-        //  if (ctrl_c_pressed) {
-        //     ctrl_c_pressed = 0; // Reset the Ctrl-C flag
-        //     printf("\n"); // Print a newline
-        // }
-        // prompt(directory);
+        prompt(directory);
 
         char input[4096];
         char copy_input[4096];
-        signal(SIGINT, sigint_handler);  // Register Ctrl-C handler
-        fgets(input, 4096, stdin);
-        ctrl_c_pressed=0;
+        if (fgets(input, 4096, stdin) == NULL)
+        {
+
+            // Ctrl+D (EOF) was detected. Exit the shell gracefully.
+            // printf("Logging out of the shell...\n");
+            break;
+        }
+
+        // fgets(input, 4096, stdin);
         strcpy(copy_input, input);
         char *stringsafterparsing[MAXARGUMENTS];
         char *copystringsafterparsing[MAXARGUMENTS];
-        if(strcmp(input,"exit\n")==0){
+        if (strcmp(input, "exit\n") == 0)
+        {
             break;
         }
-          if (ctrl_c_pressed) {
-            ctrl_c_pressed = 0; // Reset the Ctrl-C flag
-            printf("\n"); // Print a newline
-        }
+
         int l = parsesemicolon(input, stringsafterparsing);
 
         for (int i = 0; i < l; i++)
@@ -106,13 +87,10 @@ int main()
             }
         }
 
-
         for (int i = 0; i < l; i++)
         {
-               
-            parsespace(stringsafterparsing[i], copystringsafterparsing, i, &count_of_history, history, history_file_path, directory, previous_directory, copystringsafterparsing[i],processids,&countofprocessids);
-        }
 
-        prompt(directory);
+            parsespace(stringsafterparsing[i], copystringsafterparsing, i, &count_of_history, history, history_file_path, directory, previous_directory, copystringsafterparsing[i], processids, &countofprocessids);
+        }
     }
 }
