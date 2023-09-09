@@ -24,6 +24,8 @@ void input_output(char *stringafterparsing);
 void executepiping(char *input);
 void executepipingwithIO(char *input);
 void activities(Process *processids,int *countofprocess);
+void iman(char **input);
+void ping(char **input);
 #define ANSI_COLOR_GREEN   "\x1b[32m"  
 #define ANSI_COLOR_WHITE   "\x1b[0m"  
 #define ANSI_COLOR_BLUE    "\x1b[34m"  

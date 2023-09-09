@@ -36,11 +36,15 @@ int count=0;
 
             if (strncmp(line, "State:", 6) == 0) {
                 sscanf(line,"State: %c", &status);
+                // printf("%c\n",status);
                 if(status=='S'){
                     strcpy(statusfile,"Running");
                 }
-                else{
+                else if(status=='T'){ 
                     strcpy(statusfile,"Stopped");
+                }
+                else{
+                    continue;
                 }
                 // printf("%c\n",status);
     printf("%d : %s - %s\n",processids[i].pid,processids[i].processname,statusfile);

@@ -21,6 +21,8 @@
 #include <fcntl.h>
 #include <ncurses.h>
 #include <signal.h>
+#include <netdb.h>
+#include <arpa/inet.h>
 
 extern int foregroundprocessid;
 typedef struct Process{

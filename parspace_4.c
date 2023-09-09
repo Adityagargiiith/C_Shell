@@ -92,6 +92,16 @@ else if(strcmp(parsedpipeargument[0],"activities")==0){
     // printf("hello");
     activities(processids,countofprocessids);
 }
+else if(strcmp(parsedpipeargument[0],"iman")==0){
+    // printf("hello");
+    iman(parsedpipeargument);
+    // activities(processids,countofprocessids);
+}
+else if(strcmp(parsedpipeargument[0],"ping")==0){
+    // printf("hello");
+    ping(parsedpipeargument);
+    // activities(processids,countofprocessids);
+}
 else{
     executeprocess(copy_of_input,homedirectory,previous_directory,copy_of_input,count_of_history,history,processids,countofprocessids);
     add_to_history(stringsafterpartsing,v,count_of_history,history);

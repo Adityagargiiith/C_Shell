@@ -56,13 +56,15 @@ int main()
     {
         prompt(directory);
 
+
         char input[4096];
         char copy_input[4096];
         if (fgets(input, 4096, stdin) == NULL)
         {
-
-            // Ctrl+D (EOF) was detected. Exit the shell gracefully.
-            // printf("Logging out of the shell...\n");
+            for(int i=0;i<countofprocessids;i++){
+                kill(processids[i].pid,SIGTERM);
+            }
+printf("\n");
             break;
         }
 
