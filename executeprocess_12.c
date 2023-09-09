@@ -1,7 +1,8 @@
 #include "headers.h"
 #include "prompt.h"
-void process_single_command(char *input2, int flag, char *homedirectory, char *previous_directory, char *copy_of_input, int *count_of_history, char **history)
+void process_single_command(char *input2, int flag, char *homedirectory, char *previous_directory, char *copy_of_input, int *count_of_history, char **history,Process *processids,int *numberofprocesses)
 {
+    char *copy=strdup(input2);
 
     char *parsedpipeargument[MAXARGUMENTS];
     int count = 0;
@@ -56,7 +57,6 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
     }
     else if (strcmp(parsedpipeargument[0], "seek") == 0)
     {
-
         seek_command(parsedpipeargument,homedirectory,previous_directory);
     }
     else
@@ -82,9 +82,17 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
 
         else if (pid > 0)
         {
+            
             // Parent process
             if (flag == 1)
             {
+                // printf("---->%d",*numberofprocesses);
+                processids[*numberofprocesses].pid=pid;
+               strcpy(processids[*numberofprocesses].processname,input2);
+                (*numberofprocesses)++;
+
+
+
                 pid_t copy_pid;
                 copy_pid = pid;
                 while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
@@ -105,6 +113,11 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
             }
             else
             {
+                    processids[*numberofprocesses].pid=pid;
+                    // strcpy()
+               strcpy(processids[*numberofprocesses].processname,copy);
+                //   processids->pid=pid;
+                (*numberofprocesses)++;
                 while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
                 {
                     if (WIFEXITED(status))
@@ -134,9 +147,10 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
     }
 }
 
-void executeprocess(char *input2, char *homedirectory, char *previous_directory, char *copy_of_input, int *count_of_history, char **history)
+void executeprocess(char *input2, char *homedirectory, char *previous_directory, char *copy_of_input, int *count_of_history, char **history,Process* processids,int *numberofprocesses)
 {
-
+// int pid1=getpid()
+// processids[numberofprocesses]=
     // printf("hello");
     int count = 0;
     char parsedpipeargument[MAXARGUMENTS][MAXARGUMENTS];
@@ -154,7 +168,7 @@ void executeprocess(char *input2, char *homedirectory, char *previous_directory,
             flag = 1;
             char copy[1000];
             strcpy(copy, parsedpipeargument[count]);
-            process_single_command(copy, flag, homedirectory, previous_directory, copy_of_input, count_of_history, history);
+            process_single_command(copy, flag, homedirectory, previous_directory, copy_of_input, count_of_history, history,processids,numberofprocesses);
             // free(parsedpipeargument[count]);
 
             input2 += i + 1;
@@ -168,7 +182,7 @@ void executeprocess(char *input2, char *homedirectory, char *previous_directory,
         char copy[1000];
         strcpy(parsedpipeargument[count], input2);
         strcpy(copy, parsedpipeargument[count]);
-        process_single_command(copy, 0, homedirectory, previous_directory, copy_of_input, count_of_history, history);
+        process_single_command(copy, 0, homedirectory, previous_directory, copy_of_input, count_of_history, history,processids,numberofprocesses);
     }
     // printf("%d",count);
 }

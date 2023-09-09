@@ -3,7 +3,7 @@
 // extern int count_of_history_1;
 // count_of_history_1=0;
 
-void parsespace(char *input2,char ** stringsafterpartsing,int v,int *count_of_history,char **history,char *history_file_path,char *homedirectory,char *previous_directory,char *copy_of_input) {
+void parsespace(char *input2,char ** stringsafterpartsing,int v,int *count_of_history,char **history,char *history_file_path,char *homedirectory,char *previous_directory,char *copy_of_input,Process *processids,int *countofprocessids) {
 
 
 int count=0;
@@ -88,12 +88,20 @@ add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 
 }
+else if(strcmp(parsedpipeargument[0],"activities")==0){
+    // printf("hello");
+    activities(processids,countofprocessids);
+}
 else{
-    executeprocess(copy_of_input,homedirectory,previous_directory,copy_of_input,count_of_history,history);
+    executeprocess(copy_of_input,homedirectory,previous_directory,copy_of_input,count_of_history,history,processids,countofprocessids);
     add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 
 }
+
+// for(int k=0;k<*countofprocessids;k++){
+// printf("%d",processids[k]);
+// }
    
     // return;
 }

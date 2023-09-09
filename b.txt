@@ -1,1 +1,2 @@
-1212
+echo hello
+echo hello

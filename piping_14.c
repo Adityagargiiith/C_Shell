@@ -101,10 +101,6 @@ while (command[count]!=NULL)
     count++;
     /* code */
 }
-// printf("%d\n",count);
-// for(int i=0;i<count;i++){
-//     printf("%s-------\n",command[i]);
-// }
 
     command[count] = NULL; // Nu
 

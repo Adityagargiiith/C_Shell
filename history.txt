@@ -1,15 +1,15 @@
-echo "Lorem Ipsum" | wc
-touch.txt
-touch a.txt
-peek
-cat a.txt
-cat < a.txt | wc | sed 's/ //g' hello
-hello
-<[32madityagarg@[0m[32mpop-osERROR:hello is not a valid commacat < a.txt | wc | sed 's/ //g' | cat > b.txt
-ERROR:hello is not a valid commacat < a.txt | wc | sed 's/ //g' | cat > b.txt
-cat < a.txt | wc | sed 's/ //g' | cat > b.txt
-cat b.txt
-cat < a.txt | wc | sed 's/ //g'  cat < a.txt | wc | sed 's/ //g' | cat > b.txt
- cat < a.txt | wc | sed 's/ //g' | cat > b.txt
-sed
- cat < a.txt | wc | sed 's/ //g' | cat > b.txt
+sfdadsf
+safd
+sfd
+fsd
+fsda
+dsafa
+fsd
+sfd
+sfda
+fsad
+asexit
+sleep 5
+sleep5
+sleep 5
+warp ..

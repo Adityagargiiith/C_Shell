@@ -69,30 +69,47 @@ if (child == 0) {
     char *inputFile = NULL;
             if (strchr(commands[i], '<') != NULL) {
                 char *token = strtok(commands[i], "< ");
+                // printf("%s",token);
                 inputFile = strtok(NULL, "< ");
                 int fd_in = open(inputFile, O_RDONLY);
                 dup2(fd_in, STDIN_FILENO);
                 close(fd_in);
             }
-                printf("%s",inputFile);
-
+                // printf("%s",inputFile);
             // Set up output redirection if needed
+            
+
             char *outputFile = NULL;
             int append = 0;
-            if (strchr(commands[i], '>') != NULL) {
-                char *token = strtok(commands[i], "> ");
-                outputFile = strtok(NULL, "> ");
-                if (strchr(token, '>') != NULL) {
+            if (strstr(commands[i], ">>") != NULL) {
+                char *token = strtok(commands[i], ">>");
+                outputFile = strtok(NULL, ">>");
                     append = 1;
-                }
-                int fd_out;
-                if (append) {
+                     while (*outputFile == ' ' || *outputFile == '\t') {
+                    outputFile++;
+                    }
+                     int len = strlen(outputFile);
+    while (len > 0 && (outputFile[len - 1] == ' ' || outputFile[len - 1] == '\t')) {
+        outputFile[len - 1] = '\0';
+        len--;
+    }
+                    int fd_out;
                     fd_out = open(outputFile, O_WRONLY | O_CREAT | O_APPEND, 0666);
-                } else {
-                    fd_out = open(outputFile, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-                }
                 dup2(fd_out, STDOUT_FILENO);
                 close(fd_out);
+            }
+            
+           else if (strchr(commands[i], '>') != NULL) {
+                char *token = strtok(commands[i], "> ");
+                outputFile = strtok(NULL, "> ");
+                    append = 0;
+                int fd_out;
+            
+                    fd_out = open(outputFile, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+        
+                dup2(fd_out, STDOUT_FILENO);
+                close(fd_out);
+                
             }
 
     if (i > 0) {
@@ -104,12 +121,8 @@ if (child == 0) {
         dup2(pipes[i][1], STDOUT_FILENO);//writes in the current pipe
         close(pipes[i][1]);
     }
-    // printf("%s\n",commands[i]);
-// if(strstr(commands[i],">")!=NULL || strstr(commands[i],">>")!=NULL||strstr(commands[i],"<")!=NULL){
-//     input_output(input);
-// }
-// else{
     
+    printf("%s",commands[i]);
 char *command[MAXARGUMENTS];
 
 // char *copyofstringsafterparsing=strdup(input2);
