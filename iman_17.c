@@ -29,8 +29,7 @@ int j=0;
 }
 
 void iman(char **input) {
-    // if (argc != 2) {
-    //     fprintf(stderr, "Usage: %s <command_name>\n", argv[0]);
+     //     fprintf(stderr, "Usage: %s <command_name>\n", argv[0]);
     //     exit(EXIT_FAILURE);
     // }
 
@@ -57,9 +56,11 @@ void iman(char **input) {
 
     char request[MAX_BUFFER_SIZE];
     snprintf(request, sizeof(request), "GET http://man.he.net/?topic=%s&section=all HTTP/1.1\r\nHost: man.he.net\r\n\r\n", command_name);
-
+// printf("%s\n",request);
     if (write(sockfd, request, strlen(request)) < 0) {
-        error("Error writing to socket");
+        // error("Error writing to socket");
+        printf("No manpagefound");
+        return;
     }
 
 
@@ -71,12 +72,10 @@ void iman(char **input) {
    int lineLength = 0;
    int bytesRead;
    int foundmanpage=0;
-    // Read and process each line
     while ((bytesRead = read(sockfd, buffer, sizeof(buffer))) > 0) {
         for (ssize_t i = 0; i < bytesRead; i++) {
-            // Check for newline character
             if (buffer[i] == '\n') {
-                line[lineLength] = '\0'; // Null-terminate the line
+                line[lineLength] = '\0'; 
                     if(strncmp(line,"NAME",4)==0){
                     start=1;
                     }
@@ -84,17 +83,19 @@ void iman(char **input) {
                         stripHTMLTags(line);
                     printf("%s\n", line);
                     }
-                    if(strncmp(line,"No matches",10)==0){
-                        foundmanpage=1;
-                    }
+                    // if(strncmp(line,"Search Again",12)==0){
+                    //     foundmanpage=1;
+                    //     break;
+                    // }
                 lineLength = 0;
-            } else if (lineLength < 1023) {
+            } else if (lineLength < 1000) {
                 line[lineLength++] = buffer[i];
             }
         }
     }
-    if(foundmanpage==1){
-        printf("No such command");
+    if(start==0){
+        printf("No such command\n");
+        return;
     }
 
     if (n < 0) {
@@ -106,3 +107,5 @@ void iman(char **input) {
 
     // return 0;
 }
+ // if (argc != 2) {
+  

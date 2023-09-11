@@ -1,5 +1,11 @@
 #include "headers.h"
 #include "prompt.h"
+void executesystemcommands(char *outputfile, char **args, int append){
+    
+
+
+    
+}
 void execut_command2(char *outputfile, char *inputfile, char **args, int append)
 {
     // printf("%s",inputfile);
@@ -15,9 +21,7 @@ void execut_command2(char *outputfile, char *inputfile, char **args, int append)
     else if (pid == 0)
     {
 
-        // int flags = O_WRONLY | O_CREAT;
-        // else{
-        // flags |=O_APPEND;
+        
         int flags = O_WRONLY | O_CREAT;
         if (append == 0)
         {
@@ -78,6 +82,11 @@ void execut_command2(char *outputfile, char *inputfile, char **args, int append)
 
 void execut_command(char *outputfile, char **args, int append)
 {
+    // printf("%s\n",args[0]);
+    if(strcmp(args[0],"peek")==0 && append==-1){
+        executesystemcommands(outputfile,args,append);
+
+    }
     pid_t pid = fork();
 
     if (pid == -1)
@@ -154,7 +163,7 @@ void execut_command(char *outputfile, char **args, int append)
     }
 }
 
-void input_output(char *input)
+void input_output(char *input,char *homedirectory,char *previousdirectory)
 {
 
     // printf("%s\n",input);
@@ -256,17 +265,12 @@ void input_output(char *input)
         // }
 
         char *file2 = strtok(substring2, " \t\n");
-        // printf("%s\n",file);
-        // // printf("%ld\n",substring_length);
-        // printf("%s\n",file2);
-        // for(int i=0;i<count;i++){
-        //     printf("%s\n",args[i]);
-
-        // }
-
         execut_command2(file, file2, args, append);
     }
     // printf("%s\n",file);
+    // else if(strcmp(args[0],"peek")==0){
+
+    // }
     else
     {
         execut_command(file, args, append);

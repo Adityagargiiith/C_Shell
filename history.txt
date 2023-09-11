@@ -1,15 +1,15 @@
-emacs new.txt &
-aleep 100 &
+eixt
+cat < a.txt | wc
+sleep 20 &
+sleep 2 &
+iman fork
+ls > a.txt
+cat a.txt
+peek
 sleep 100 &
-sleep 50 &
 emacs new.txt &
-pint 112553 9
-fdasdfas
-emacs new.txt &
-vim
+ls
+sleep 100
 emacs new.txt
 sleep 100 &
-emacs new.txt &
-activites
-sleep 100 &
-emacs new.txt &
+ls

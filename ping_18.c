@@ -3,6 +3,14 @@
 
 
 void ping(char **input){
+    int count=0;
+    while(input[count]!=NULL){
+        count++;
+    }
+    if(count<2){
+        printf("Not a valid ping command\n");
+        return;
+    }
 int processid=atoi(input[1]);
 int signal=(atoi(input[2]))%32;
 

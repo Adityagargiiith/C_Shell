@@ -77,8 +77,6 @@ if (child == 0) {
 
 char *command[MAXARGUMENTS];
 
-// char *copyofstringsafterparsing=strdup(input2);
-// printf("%s++++\n",commands[i]);
 
 char *copyofstrings=strdup(commands[i]);
 

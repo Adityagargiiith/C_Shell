@@ -1,5 +1,25 @@
 #include "headers.h"
 #include "prompt.h"
+
+// void sigtstp_handler(int sig)
+// {
+//     // if(sig==SIGTSTP){
+
+//     printf("%d\n",foregroundprocessid);
+
+//       if (kill(foregroundprocessid,0) == 0)
+//     {
+//         kill(foregroundprocessid, SIGTSTP);
+//         // printf("\nProcess %d suspended.\n", foregroundprocessid);
+//         // foregroundprocessid = 0;
+//     }
+//     // else{
+//     //     // printf("hello");
+//     //      printf("\nCtrl-Z pressed, but not suspending the shell.\n");
+//     // // }
+//     // }
+
+// }
 void process_single_command(char *input2, int flag, char *homedirectory, char *previous_directory, char *copy_of_input, int *count_of_history, char **history,Process *processids,int *numberofprocesses)
 {
     char *copy=strdup(input2);
@@ -88,12 +108,14 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
             // Parent process
             if (flag == 1)
             {
+                
                 // printf("---->%d",*numberofprocesses);
+    // signal(SIGTSTP, sigtstp_handler);
 
                 pid_t copy_pid;
                 copy_pid = pid;
                 processids[*numberofprocesses].pid=copy_pid;
-                foregroundprocessid=copy_pid;
+                // foregroundprocessid=copy_pid;
 
                strcpy(processids[*numberofprocesses].processname,copy);
                 (*numberofprocesses)++;
@@ -118,6 +140,7 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
 
                 // signal(SIGINT,SIG_IGN);
                 // signal(SIGTSTP,SIG_IGN);
+    // signal(SIGTSTP, sigtstp_handler);
 
                 int copy_pid;
                 copy_pid = pid;
@@ -127,11 +150,6 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
 
                strcpy(processids[*numberofprocesses].processname,copy);
                 (*numberofprocesses)++;
-            //         processids[*numberofprocesses].pid=pid;
-            //         // strcpy()
-            //    strcpy(processids[*numberofprocesses].processname,copy);
-            //     //   processids->pid=pid;
-            //     (*numberofprocesses)++;
 
                 while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
                 {
@@ -144,10 +162,20 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
                         printf("Background process %d exited abnormally\n", pid);
                     }
                 }
+printf("%d\n",copy_pid);
 
-            waitpid(pid, &status, 0);
+
+while(1){
+      waitpid(pid, &status, WUNTRACED);
+      if(WIFEXITED(status)){
+        break;
+      }
+      if(WIFSTOPPED(status)){
+        break;
+      }
+}
+
             }
-
             gettimeofday(&end_time, NULL);
             int time = end_time.tv_sec - start_time.tv_sec;
             if (time > 2)
@@ -159,6 +187,7 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
     {
         perror("Fork error");
     }
+    
     }
 }
 

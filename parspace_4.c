@@ -78,7 +78,7 @@ save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 }
 
 else if(strstr(copyofstringsafterparsing,">>")!=NULL || strchr(copyofstringsafterparsing,'>')!=NULL || strchr(copyofstringsafterparsing,'<')!=NULL){
-    input_output(copyofstringsafterparsing);
+    input_output(copyofstringsafterparsing,homedirectory,previous_directory);
     add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 }
@@ -92,7 +92,7 @@ else if(strcmp(parsedpipeargument[0],"activities")==0){
     // printf("hello");
     activities(processids,countofprocessids);
 }
-else if(strcmp(parsedpipeargument[0],"iman")==0){
+else if(strcmp(parsedpipeargument[0],"iMan")==0){
     // printf("hello");
     iman(parsedpipeargument);
     // activities(processids,countofprocessids);
@@ -101,6 +101,15 @@ else if(strcmp(parsedpipeargument[0],"ping")==0){
     // printf("hello");
     ping(parsedpipeargument);
     // activities(processids,countofprocessids);
+}
+else if(strcmp(parsedpipeargument[0],"fg")==0 || strcmp(parsedpipeargument[0],"bg")==0){
+    // printf("hello");
+    executefgbg(parsedpipeargument);
+}
+else if(strcmp(parsedpipeargument[0],"neonate")==0){
+
+    neonate(parsedpipeargument);
+    
 }
 else{
     executeprocess(copy_of_input,homedirectory,previous_directory,copy_of_input,count_of_history,history,processids,countofprocessids);

@@ -4,28 +4,16 @@
    int foregroundprocessid =0;
 void sigint_handler(int sig)
 {
+    kill(foregroundprocessid,SIGINT);
     printf("\n");
 }
-
 void sigtstp_handler(int sig)
-{
-    // if(sig==SIGTSTP){
-
-    printf("%d\n",foregroundprocessid);
-
-      if (foregroundprocessid != 0)
-    {
-        kill(foregroundprocessid, SIGSTOP);
-        printf("\nProcess %d suspended.\n", foregroundprocessid);
-        foregroundprocessid = 0;
-    }
-    else{
-        // printf("hello");
-         printf("\nCtrl-Z pressed, but not suspending the shell.\n");
-    }
-    // }
-
+{  
+    // printf("%d\n",foregroundprocessid);
+        kill( SIGTSTP,foregroundprocessid);
+        printf("\n");
 }
+// void si
 
 int main()
 {
@@ -35,7 +23,7 @@ int main()
     Process processids[1000];
 
     int countofprocessids = 0;
-
+// printf("%d-->terminal\n",getpid());
     char cwd[1000];
     getcwd(cwd, sizeof(cwd));
 
@@ -50,6 +38,7 @@ int main()
     load_history(&count_of_history, history, history_file_path);
 
 //   setpgid(0, 0);
+    // trap 'sigint_handler' SIGINT
     signal(SIGINT, sigint_handler);
     signal(SIGTSTP, sigtstp_handler);
     while (1)
@@ -61,9 +50,9 @@ int main()
         char copy_input[4096];
         if (fgets(input, 4096, stdin) == NULL)
         {
-            for(int i=0;i<countofprocessids;i++){
-                kill(processids[i].pid,SIGTERM);
-            }
+            // for(int i=0;i<countofprocessids;i++){
+                kill(0,SIGTERM);
+            
 printf("\n");
             break;
         }

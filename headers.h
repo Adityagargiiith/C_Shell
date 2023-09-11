@@ -23,6 +23,7 @@
 #include <signal.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <termios.h>
 
 extern int foregroundprocessid;
 typedef struct Process{
@@ -31,12 +32,6 @@ typedef struct Process{
     }Process;
 
 #include "prompt.h"
-// #include <sys/types.h>
-// #include <sys/wait.h>
-
-
-// int count_of_history_1;
-// char *history[20];
 
 
 #endif
