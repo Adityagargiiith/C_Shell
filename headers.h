@@ -12,15 +12,26 @@
 #include<readline/readline.h>
 #include<readline/history.h>
 #include <sys/utsname.h>
- #include <dirent.h>
- #include <pwd.h>
+#include <dirent.h>
+#include <pwd.h>
 #include <grp.h>
 #include <time.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-// int count_of_history_1;
-// char *history[20];
+#include <fcntl.h>
+#include <ncurses.h>
+#include <signal.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+#include <termios.h>
+
+extern int foregroundprocessid;
+typedef struct Process{
+        int pid;
+        char processname[1000];
+    }Process;
 
 #include "prompt.h"
+
 
 #endif

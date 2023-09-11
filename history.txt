@@ -1,15 +1,15 @@
-seek -d -e codeforces -
-seek -d -e codefoces -
-seek -d adf .
-seek -d fds
-seek -f fads
-seek -f dfsa .
-seek -d -f adfs
-seek -d -f afd .
-seek -d -e dasf
-proclore
-git add .
-git status
-git commit -m "final git push"
-git commit --m "finalpush"
-git push origin
+eixt
+cat < a.txt | wc
+sleep 20 &
+sleep 2 &
+iman fork
+ls > a.txt
+cat a.txt
+peek
+sleep 100 &
+emacs new.txt &
+ls
+sleep 100
+emacs new.txt
+sleep 100 &
+ls

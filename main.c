@@ -1,39 +1,70 @@
 #include "headers.h"
-// #include
+
+    char directory[100];
+   int foregroundprocessid =0;
+void sigint_handler(int sig)
+{
+    kill(foregroundprocessid,SIGINT);
+    printf("\n");
+}
+void sigtstp_handler(int sig)
+{  
+    // printf("%d\n",foregroundprocessid);
+        kill( SIGTSTP,foregroundprocessid);
+        printf("\n");
+}
+// void si
 
 int main()
 {
-    // Keep accepting commands
+    // shellpid=getpid();
     int count_of_history = 0;
     char *history[16];
+    Process processids[1000];
 
+    int countofprocessids = 0;
+// printf("%d-->terminal\n",getpid());
     char cwd[1000];
     getcwd(cwd, sizeof(cwd));
 
-    char directory[100];
     getcwd(directory, sizeof(directory));
     char previous_directory[1000];
     strcpy(previous_directory, directory);
-    // printf("%s",cwd);
     char history_file_path[1000];
 
-    // snprintf(history_file_path, sizeof(history_file_path), "%s/", cwd);
     strcpy(history_file_path, cwd);
     strcat(history_file_path, "/");
     strcat(history_file_path, HISTORY_FILE);
-
     load_history(&count_of_history, history, history_file_path);
 
+//   setpgid(0, 0);
+    // trap 'sigint_handler' SIGINT
+    signal(SIGINT, sigint_handler);
+    signal(SIGTSTP, sigtstp_handler);
     while (1)
     {
-        // Print appropriate prompt with username, systemname and directory before accepting input
         prompt(directory);
+
+
         char input[4096];
         char copy_input[4096];
-        fgets(input, 4096, stdin);
+        if (fgets(input, 4096, stdin) == NULL)
+        {
+            // for(int i=0;i<countofprocessids;i++){
+                kill(0,SIGTERM);
+            
+printf("\n");
+            break;
+        }
+
+        // fgets(input, 4096, stdin);
         strcpy(copy_input, input);
         char *stringsafterparsing[MAXARGUMENTS];
         char *copystringsafterparsing[MAXARGUMENTS];
+        if (strcmp(input, "exit\n") == 0)
+        {
+            break;
+        }
 
         int l = parsesemicolon(input, stringsafterparsing);
 
@@ -47,11 +78,10 @@ int main()
             }
         }
 
-        // printf("%d",u);
         for (int i = 0; i < l; i++)
         {
-            parsespace(stringsafterparsing[i], copystringsafterparsing, i, &count_of_history, history, history_file_path, directory, previous_directory, copystringsafterparsing[i]);
-        }
 
+            parsespace(stringsafterparsing[i], copystringsafterparsing, i, &count_of_history, history, history_file_path, directory, previous_directory, copystringsafterparsing[i], processids, &countofprocessids);
+        }
     }
 }
