@@ -27,7 +27,7 @@ for(int i=0;i<MAXARGUMENTS;i++){
 // printf("%s",parsedpipeargument[0]);
 // char *history[16];
 
-if(strcmp(parsedpipeargument[0],"warp")==0){
+if(strcmp(parsedpipeargument[0],"warp")==0 && strstr(copyofstringsafterparsing,">>")==NULL && strchr(copyofstringsafterparsing,'>')==NULL && strchr(copyofstringsafterparsing,'<')==NULL && strstr(copyofstringsafterparsing,"|")==NULL ){
     char current_directory[1000];
     getcwd(current_directory,sizeof(current_directory));
     
@@ -41,7 +41,8 @@ strcpy(previous_directory,current_directory);
 
 }
 
-else if(strcmp(parsedpipeargument[0],"peek")==0){
+else if(strcmp(parsedpipeargument[0],"peek")==0 && strstr(copyofstringsafterparsing,">>")==NULL && strchr(copyofstringsafterparsing,'>')==NULL && strchr(copyofstringsafterparsing,'<')==NULL && strstr(copyofstringsafterparsing,"|")==NULL)
+{
     // printf("hello");
 executepeek(parsedpipeargument,homedirectory,previous_directory);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
@@ -51,20 +52,20 @@ save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 }
 
 
-else if(strcmp(parsedpipeargument[0],"pastevents")==0){
+else if(strcmp(parsedpipeargument[0],"pastevents")==0 && strstr(copyofstringsafterparsing,">>")==NULL && strchr(copyofstringsafterparsing,'>')==NULL && strchr(copyofstringsafterparsing,'<')==NULL&& strstr(copyofstringsafterparsing,"|")==NULL){
 // add_to_history(stringsafterpartsing,v);
 print_history(parsedpipeargument,count_of_history,history,homedirectory,previous_directory,copy_of_input);
 
 }
 
-else if(strcmp(parsedpipeargument[0],"proclore")==0){
+else if(strcmp(parsedpipeargument[0],"proclore" )==0 && strstr(copyofstringsafterparsing,">>")==NULL && strchr(copyofstringsafterparsing,'>')==NULL && strchr(copyofstringsafterparsing,'<')==NULL && strstr(copyofstringsafterparsing,"|")==NULL){
 // add_to_history(stringsafterpartsing,v);
 proclore(parsedpipeargument,homedirectory);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 
 }
-else if(strcmp(parsedpipeargument[0],"seek")==0){
+else if(strcmp(parsedpipeargument[0],"seek")==0 && strstr(copyofstringsafterparsing,">>")==NULL && strchr(copyofstringsafterparsing,'>')==NULL && strchr(copyofstringsafterparsing,'<')==NULL && strstr(copyofstringsafterparsing,"|")==NULL){
 
 seek_command(parsedpipeargument,homedirectory,previous_directory);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
@@ -83,7 +84,13 @@ else if(strstr(copyofstringsafterparsing,">>")!=NULL || strchr(copyofstringsafte
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 }
 else if(strstr(copyofstringsafterparsing,"|")!=NULL){
-executepiping(copyofstringsafterparsing);
+// int flag=0; 
+//                     // printf("hello\n");
+// if(strcmp(parsedpipeargument[0],"warp")==0 || strcmp(parsedpipeargument[0],"peek")==0 || strcmp(parsedpipeargument[0],"seek")==0 || strcmp(parsedpipeargument[0],"proclore")==0){
+//     flag=1;
+// }
+// printf("%d",flag);
+executepiping(copyofstringsafterparsing,homedirectory,previous_directory);
 add_to_history(stringsafterpartsing,v,count_of_history,history);
 save_history(stringsafterpartsing,v,count_of_history,history,history_file_path);
 

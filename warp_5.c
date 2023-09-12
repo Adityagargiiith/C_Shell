@@ -126,16 +126,16 @@ void executewarp(char **input2, char *homedirectory, char *previous_directory)
 
                 char dash[10] = "/";
 
-                strcat(current_directory, dash);
+                strcat(current_directory, dash); 
                 strcat(current_directory, path);
                 strcat(current_directory, dash);
                 // printf("%s\n",current_directory);
                 int l = chdir(current_directory);
                 if(l<0){
                     printf("Not a valid directory\n");
+                    return;
                 }
                 else{
-
 
                 if (strncmp(current_directory, homedirectory, strlen(homedirectory)) == 0)
                 {

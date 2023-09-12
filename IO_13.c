@@ -1,7 +1,95 @@
 #include "headers.h"
 #include "prompt.h"
-void executesystemcommands(char *outputfile, char **args, int append){
-    
+void executesystemcommands(char *outputfile, char **args, int append,char *homedirectory,char *previousdirectory){
+    // printf("--->hello%d\n",append);
+    int flags = O_WRONLY | O_CREAT;
+    int original_stdout = dup(STDOUT_FILENO); 
+        if (append == 0)
+        {
+            flags |= O_APPEND;
+            int file_descrpytor = open(outputfile, flags, 0644);
+            if (file_descrpytor == -1)
+            {
+                perror("open");
+                exit(1);
+            }
+            dup2(file_descrpytor, STDOUT_FILENO);
+            close(file_descrpytor);
+            if(strcmp(args[0],"peek")==0){
+            executepeek(args,homedirectory,previousdirectory);
+            }
+            // if(strcmp(args[0],"pastevents")==0){
+            //     // print_history(i)
+            // }
+            if(strcmp(args[0],"warp")==0){
+            executewarp(args,homedirectory,previousdirectory);
+            }
+            if(strcmp(args[0],"proclore")==0){
+            // executepeek(args,homedirectory,previousdirectory);
+            proclore(args,homedirectory);
+            }
+            if(strcmp(args[0],"seek")==0){
+            seek_command(args,homedirectory,previousdirectory);
+            }
+            dup2(original_stdout,STDOUT_FILENO);
+            close(original_stdout);
+            // printf("hello");
+            return;
+        
+        }
+        // int flags = O_WRONLY | O_CREAT;
+        else if (append == 1)
+        {
+            flags |= O_TRUNC;
+            int original_stdout = dup(STDOUT_FILENO); 
+
+            int file_descrpytor = open(outputfile, flags, 0644);
+
+            if (file_descrpytor == -1)
+            {
+                perror("open");
+                exit(1);
+            }
+            dup2(file_descrpytor, STDOUT_FILENO);
+            close(file_descrpytor); 
+            if(strcmp(args[0],"peek")==0){
+            executepeek(args,homedirectory,previousdirectory);
+            }
+            if(strcmp(args[0],"warp")==0){
+            executewarp(args,homedirectory,previousdirectory);
+            }
+            if(strcmp(args[0],"proclore")==0){
+            // executepeek(args,homedirectory,previousdirectory);
+            proclore(args,homedirectory);
+            }
+            if(strcmp(args[0],"seek")==0){
+            seek_command(args,homedirectory,previousdirectory);
+            }
+             dup2(original_stdout,STDOUT_FILENO);
+            close(original_stdout);
+                // dup2(STDOUT_FILENO,file_descrpytor);   
+            return;
+        }
+        // int flags = O_WRONLY | O_CREAT;
+       else
+        {
+            if(strcmp(args[0],"peek")==0){
+            executepeek(args,homedirectory,previousdirectory);
+            }
+            if(strcmp(args[0],"warp")==0){
+            executewarp(args,homedirectory,previousdirectory);
+            }
+            if(strcmp(args[0],"proclore")==0){
+            // executepeek(args,homedirectory,previousdirectory);
+            proclore(args,homedirectory);
+            }
+            if(strcmp(args[0],"seek")==0){
+            seek_command(args,homedirectory,previousdirectory);
+            }
+            
+            return;
+        }
+
 
 
     
@@ -48,15 +136,6 @@ void execut_command2(char *outputfile, char *inputfile, char **args, int append)
             dup2(file_descrpytor, STDOUT_FILENO);
             close(file_descrpytor);
         }
-        //  int temp_output_fd = open(temp_output, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        // if (temp_output_fd == -1) {
-        //     perror("open");
-        //     exit(1);
-        // }
-
-        // // Redirect stdout to the temporary output file
-        // dup2(temp_output_fd, STDOUT_FILENO);
-        // close(temp_output_fd);
 
         int file_descrpytor2 = open(inputfile, O_RDONLY);
         if (file_descrpytor2 == -1)
@@ -72,6 +151,7 @@ void execut_command2(char *outputfile, char *inputfile, char **args, int append)
             printf("Not a valid command");
             exit(1);
         }
+
     }
     else
     {
@@ -80,13 +160,16 @@ void execut_command2(char *outputfile, char *inputfile, char **args, int append)
     }
 }
 
-void execut_command(char *outputfile, char **args, int append)
+void execut_command(char *outputfile, char **args, int append,char *homedirctory,char *previousdirectory)
 {
     // printf("%s\n",args[0]);
-    if(strcmp(args[0],"peek")==0 && append==-1){
-        executesystemcommands(outputfile,args,append);
-
+    if(strcmp(args[0],"peek")==0 || strcmp(args[0],"warp")==0 || strcmp(args[0],"seek")==0 || strcmp(args[0],"proclore")==0){
+        // printf("--->");
+        executesystemcommands(outputfile,args,append,homedirctory,previousdirectory);
+        return;
     }
+    else{
+
     pid_t pid = fork();
 
     if (pid == -1)
@@ -140,6 +223,7 @@ void execut_command(char *outputfile, char **args, int append)
         else
         {
             // flags |=O_APPEND;
+            printf("hello");
             int file_descrpytor = open(outputfile, O_RDONLY);
             if (file_descrpytor == -1)
             {
@@ -158,8 +242,11 @@ void execut_command(char *outputfile, char **args, int append)
     }
     else
     {
+
+
         int status;
         waitpid(pid, &status, 0);
+    }
     }
 }
 
@@ -266,6 +353,7 @@ void input_output(char *input,char *homedirectory,char *previousdirectory)
 
         char *file2 = strtok(substring2, " \t\n");
         execut_command2(file, file2, args, append);
+
     }
     // printf("%s\n",file);
     // else if(strcmp(args[0],"peek")==0){
@@ -273,6 +361,6 @@ void input_output(char *input,char *homedirectory,char *previousdirectory)
     // }
     else
     {
-        execut_command(file, args, append);
+        execut_command(file, args, append,homedirectory,previousdirectory);
     }
 }

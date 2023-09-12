@@ -7,7 +7,7 @@ void prompt(char *homedirectory);
 int parsesemicolon(char *input2,char **arguments);
 void parsespace(char *input2,char ** stringsafterpartsing,int v,int *count_of_history,char **history,char *history_file_path,char *homedirectory,char *previous_directory,char * copy_of_input,Process *processids,int *numberofprocessids);
 void executewarp(char **input2,char *homedirectory,char *previous_directory);
-void executepeek(char **input2,char *homedirectory,char *previous_directory);
+int executepeek(char **input2,char *homedirectory,char *previous_directory);
 // void executepastevents(char **input2);
 void storehistory(char **input2);
 void add_to_history(char **input2,int count,int *count_of_history,char **history);
@@ -21,7 +21,7 @@ void executeprocess(char *input2,char *homedirectory,char *previous_directory,ch
 
 void seek_command(char ** input2,char *homedirectory,char *previous_directory);
 void input_output(char *stringafterparsing,char* homedirectory,char *previousdirectory);
-void executepiping(char *input);
+void executepiping(char *input,char* homedirectory,char *previousdirectory);
 void executepipingwithIO(char *input);
 void activities(Process *processids,int *countofprocess);
 void iman(char **input);

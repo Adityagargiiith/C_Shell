@@ -26,12 +26,7 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
 
     char *parsedpipeargument[MAXARGUMENTS];
     int count = 0;
-    // parsedpipeargument[0]="sh";
-    // parsedpipeargument[1]="-c";
-    // parsedpipeargument[2]=input2;
-    // parsedpipeargument[3]=NULL;
-
-    // printf("%s",input2);
+    
 
     for (int i = 0; i < MAXARGUMENTS; i++)
     {
@@ -44,7 +39,7 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
         {
             i--;
         }
-        // count++;
+        
     }
 
     while (parsedpipeargument[count] != NULL)
@@ -94,6 +89,7 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
             //    signal(SIGINT,SIG_DFL);
             //     signal(SIGTSTP,SIG_DFL);
             // Child process
+            setpgid(0,0);
             if (execvp(parsedpipeargument[0], parsedpipeargument) == -1)
             {
 
@@ -162,18 +158,19 @@ void process_single_command(char *input2, int flag, char *homedirectory, char *p
                         printf("Background process %d exited abnormally\n", pid);
                     }
                 }
-printf("%d\n",copy_pid);
+// printf("%d\n",copy_pid);
 
 
-while(1){
-      waitpid(pid, &status, WUNTRACED);
-      if(WIFEXITED(status)){
-        break;
-      }
-      if(WIFSTOPPED(status)){
-        break;
-      }
-}
+      waitpid(pid, &status, 0);
+// while(1){
+//     waitpid(pid,&status,WUNTRACED);
+//       if(WIFEXITED(status)){
+//         break;
+//       }
+//       if(WIFSTOPPED(status)){
+//         break;
+//       }
+// }
 
             }
             gettimeofday(&end_time, NULL);

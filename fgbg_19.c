@@ -11,16 +11,16 @@ void executefgbg(char **input){
         return;
     }
     int pid=atoi(input[1]);
-    int status;
 
 if(strcmp(input[0],"fg")==0){
-    if(kill(pid,SIGCONT==-1)){
+    if(kill(pid,SIGCONT)==-1){
         printf("No process found\n");
         return;
     }
-
-
-    waitpid(pid,&status,0);
+    int status;
+// while(1){
+    waitpid(pid,&status,WUNTRACED);
+    // waitpid(pid,&status,0);
 }
 else if(strcmp(input[0],"bg")==0){
     if(kill(pid,SIGCONT)==-1){

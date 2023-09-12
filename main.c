@@ -10,7 +10,9 @@ void sigint_handler(int sig)
 void sigtstp_handler(int sig)
 {  
     // printf("%d\n",foregroundprocessid);
-        kill( SIGTSTP,foregroundprocessid);
+    // if()
+    kill(foregroundprocessid,SIGSTOP);
+        kill(foregroundprocessid,SIGTSTP);
         printf("\n");
 }
 // void si

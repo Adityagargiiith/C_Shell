@@ -31,7 +31,7 @@ void print_permissions(mode_t mode)
   printf("%c%s ", type, perms);
 }
 
-void executepeek(char **input2,char *homedirectory,char* previous_directory)
+int executepeek(char **input2,char *homedirectory,char* previous_directory)
 {
   
   int count = 0;
@@ -58,7 +58,7 @@ void executepeek(char **input2,char *homedirectory,char* previous_directory)
     if (dir == NULL)
     {
       printf("invalid");
-      return;
+      return 0;
     }
     
 
@@ -91,24 +91,42 @@ void executepeek(char **input2,char *homedirectory,char* previous_directory)
         perror("stat");
         continue;
       }
+      int flag1=0;
+      int flag2=0;
+      int flag3=0;
+
       if (S_ISDIR(file_stat.st_mode))
       {
-        printf(ANSI_COLOR_BLUE);
+        flag1=1;
+        // printf(ANSI_COLOR_BLUE);
       }
       else if (file_stat.st_mode & S_IXUSR)
       {
-        printf(ANSI_COLOR_GREEN);
+        flag2=1;
+        // printf(ANSI_COLOR_GREEN);
       }
       else
       {
-        printf(ANSI_COLOR_WHITE);
+        flag3=1;
+        // printf(ANSI_COLOR_WHITE);
       }
+      if(flag1==1){
+      printf(ANSI_COLOR_BLUE"%s\n"ANSI_COLOR_RESET, entries[count2]);
 
-      printf("%s\n", entries[count2]);
-      printf(ANSI_COLOR_RESET);
+      }
+      else if(flag2==1){
+      printf(ANSI_COLOR_GREEN"%s\n"ANSI_COLOR_RESET, entries[count2]);
+
+      }
+      else{
+      printf(ANSI_COLOR_WHITE"%s\n"ANSI_COLOR_RESET, entries[count2]);
+      }
+// printf("here\n");
+      
+      // printf(ANSI_COLOR_RESET);
     }
-
-return;
+// printf("hello");
+return 0;
 }
 
 else if(strcmp(input2[1],"-")==0){
@@ -117,7 +135,7 @@ else if(strcmp(input2[1],"-")==0){
     if (dir == NULL)
     {
       printf("invalid");
-      return;
+      return 0;
     }
     
 
@@ -161,7 +179,7 @@ else if(strcmp(input2[1],"-")==0){
       printf("%s\n", entries[count2]);
       printf(ANSI_COLOR_RESET);
     }
-return;
+return 0;
 
 }
 
@@ -182,7 +200,7 @@ strcpy(input2[2],new_home_directory);
     if (dir == NULL)
     {
       printf("invalid");
-      return;
+      return 0;
     }
     
 
@@ -246,7 +264,7 @@ strcpy(input2[2],new_home_directory);
     if (dir == NULL)
     {
       printf("invalid");
-      return;
+      return 0;
     }
  
 
@@ -330,7 +348,7 @@ strcpy(input2[3],new_home_directory);
     if (dir == NULL)
     {
       printf("invalid");
-      return;
+      return 0;
     }
 
      
@@ -411,7 +429,7 @@ strcpy(input2[2],new_home_directory);
     if (dir == NULL)
     {
       printf("invalid");
-      return;
+      return 0;
     }
     
 
@@ -495,7 +513,7 @@ strcpy(input2[1],new_home_directory);
     if (dir == NULL)
     {
       printf("invalid");
-      return;
+      return 0;
     }
     
 
@@ -546,9 +564,9 @@ strcpy(input2[1],new_home_directory);
 
 
   }
-  return;
+  return 0;
 
 }
 
-// return;
+// return 0;
 // }

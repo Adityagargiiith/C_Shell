@@ -1,15 +1,15 @@
-eixt
-cat < a.txt | wc
-sleep 20 &
-sleep 2 &
-iman fork
-ls > a.txt
-cat a.txt
+peek | wc
+peek . | wc
 peek
+peek .
+peek
+peek | wc
+ls | wc
+fsad
 sleep 100 &
-emacs new.txt &
-ls
-sleep 100
-emacs new.txt
+sleep 20
 sleep 100 &
-ls
+sleep 20
+fads
+sleeep 5
+warar

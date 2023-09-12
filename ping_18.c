@@ -7,7 +7,7 @@ void ping(char **input){
     while(input[count]!=NULL){
         count++;
     }
-    if(count<2){
+    if(count<3){
         printf("Not a valid ping command\n");
         return;
     }
@@ -19,7 +19,6 @@ if(kill(processid,0)==-1){
 }
 else{
     if(kill(processid,signal)==-1){
-
     printf("error in signal");
     }
 
