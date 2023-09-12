@@ -1,4 +1,3 @@
-peek | wc
 peek . | wc
 peek
 peek .
@@ -13,3 +12,4 @@ sleep 20
 fads
 sleeep 5
 warar
+echo "hello hi" | wc | sed 's/ //g'

@@ -5,7 +5,7 @@ yet functional terminal experience like changing directory, listing files , past
 
 # Assumptions
 1. A history.txt file is present
-2. Pastevents commands are not stored in the text file 
+2. Pastevents commands are stored in the text file 
 3. System calls like cd, ls~ are not given as input because excevp does not take them as system call
 4. In peek command I have assumed that the hidden files will be at the top and no files will start with a special character
 5. Not more than 3 arguments will be given in peek command
