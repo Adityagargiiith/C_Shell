@@ -1,16 +1,29 @@
-# Description
-This is a basic terminal built in C Programming language as a part of Operating System and network course. It offer users a simple
-yet functional terminal experience like changing directory, listing files , pastevnets etc. Color coding has also been done for the files and directories to distinguish between them. More commands would be added till final submissions
+# C-SHELL
 
+_Made for an assignment for our Course OS&N 2023-24._
 
-# Assumptions
-1. A history.txt file is present
-2. Pastevents commands are not stored in the text file 
-3. System calls like cd, ls~ are not given as input because excevp does not take them as system call
-4. In peek command I have assumed that the hidden files will be at the top and no files will start with a special character
-5. Not more than 3 arguments will be given in peek command
-6. If a command takes more than 2 seconds other than the commands implemented by ourselves, than that command will be displayed
-along with its time taken in the next line after enter instead of displaying it in prompt
-7.  If -e flag is enabled but the directory does not have access permission (execute) or file does not have read permission, then no output is printed.
-8. Excessive edge cases has been handled but it may be possible that some of the cases might not work but i will make sure it will be handled in the final commit of the project.
+_ The Shell is completely coded in `C`._
+
+## Build & Run
+1. `makefile` (For building the executable file)
+2. `./a.out` 
+
+## ABOUT
+: _This C-SHELL_ is a replica of the existing shell present in linux but has a limited functionalities.
+
+As of right now, it has some of the following features:
+
+- Vibrant shell display that shows the current directory, username, and hostname.
+- Capable of executing several built-in commands (with the -a and -l flags) such `cd`, `echo`, `pwd` and ,`ls`}.
+- The commands have seperate name like warp for `cd`, peek for `ls` etc.
+- Saves `history` for each session for a maximum of 15.
+- Error Correction
+- Can execute both `background` qand `foreground` processes. (For more shell instructions)
+- Executing several commands with `;` in a single line.
+- To leave the shell, use `exit`.
+- I/O Redirection with <& >/>> and pipes.
+- Handling Signals (Ctrl-C, Ctrl-Z, Ctrl-D)
+
+If want to know more about commands and the functionalities the shell can perform , the assignment is present in the following link.
+- https://karthikv1392.github.io/cs3301_osn/mini-projects/mp1
 
